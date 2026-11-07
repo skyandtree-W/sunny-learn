@@ -27,8 +27,6 @@
             min-height: 100vh;
         }
         .container { width: 100%; max-width: 650px; }
-        
-        /* 頂部標題與導航 */
         header {
             background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
@@ -67,11 +65,8 @@
             color: white;
             transform: translateY(-2px);
         }
-
         .page { display: none; }
         .page.active { display: block; }
-
-        /* 卡片設計 */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -81,8 +76,6 @@
             text-align: center;
             border: 3px solid #ffe3ed;
         }
-
-        /* 語音設定列 */
         .settings-bar {
             display: flex;
             justify-content: space-between;
@@ -103,8 +96,6 @@
             cursor: pointer;
             font-weight: bold;
         }
-
-        /* 日曆闖關網格 (週六到週四複習，週五休息) */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -133,8 +124,6 @@
             cursor: not-allowed;
         }
         .day-header { font-weight: bold; color: var(--primary); font-size: 0.85rem; }
-
-        /* 互動題目區 */
         .big-word { font-size: 2.8rem; color: var(--primary); margin: 15px 0; font-weight: bold; }
         .action-btn {
             background: linear-gradient(135deg, #6ee7b7 0%, #3b82f6 100%);
@@ -173,8 +162,6 @@
             transition: 0.2s;
         }
         .option-btn:hover { background: #ebf8ff; }
-
-        /* 延伸學習與資源清單 */
         .resource-item {
             background: #f7fafc;
             border-left: 5px solid var(--accent);
@@ -185,7 +172,6 @@
         }
         .resource-item a { color: #3182ce; text-decoration: none; font-weight: bold; }
         .resource-item a:hover { text-decoration: underline; }
-
         .feedback { font-size: 1.3rem; font-weight: bold; min-height: 30px; margin: 10px 0; }
     </style>
 </head>
@@ -194,7 +180,6 @@
 <div class="container">
     <header>🌟 小四英文魔法冒險島 🌟</header>
 
-    <!-- 導航列 -->
     <div class="nav-bar">
         <button class="nav-btn active" onclick="switchPage('page-map')">🗺️ 闖關地圖</button>
         <button class="nav-btn" onclick="switchPage('page-root')">✨ 本週字根魔法</button>
@@ -203,7 +188,6 @@
         <button class="nav-btn" onclick="switchPage('page-resources')">📚 學習與兒歌區</button>
     </div>
 
-    <!-- 1. 闖關地圖頁面 -->
     <div id="page-map" class="page active">
         <div class="settings-bar">
             <span>🗣️ 語音：<strong id="voiceName">美式女聲 (US)</strong></span>
@@ -215,7 +199,6 @@
             
             <div class="calendar-grid">
                 <div class="day-header">六</div><div class="day-header">日</div><div class="day-header">一</div><div class="day-header">二</div><div class="day-header">三</div><div class="day-header">四</div><div class="day-header">五</div>
-                <!-- 星期順序：六、日、一、二、三、四、五 -->
                 <div class="day-box" onclick="startDaily(6)">第1天<br>⭐</div>
                 <div class="day-box" onclick="startDaily(0)">第2天<br>⭐</div>
                 <div class="day-box" onclick="startDaily(1)" style="background:#fffaf0; border-color:#ecc94b;">第3天<br>⚡寶可夢</div>
@@ -227,20 +210,16 @@
         </div>
     </div>
 
-    <!-- 2. 實際任務闖關頁面 -->
     <div id="page-task" class="page">
         <div class="card">
             <h3 id="task-title" style="color: var(--primary);">任務進行中</h3>
             <div id="task-instruction" style="color: var(--text-sub); margin-bottom: 10px;"></div>
-            
             <div id="task-content"></div>
-            
             <div class="feedback" id="task-feedback"></div>
             <button id="next-btn" class="action-btn" style="display:none;" onclick="nextTask()">下一題 ➡️</button>
         </div>
     </div>
 
-    <!-- 3. 本週字根魔法 (延伸背誦學習) -->
     <div id="page-root" class="page">
         <div class="card">
             <h2 style="color: var(--primary);">🪄 本週字根魔法：【 in 】</h2>
@@ -269,15 +248,12 @@
         </div>
     </div>
 
-    <!-- 4. 我的集點卡與數據分析 -->
     <div id="page-points" class="page">
         <div class="card">
             <h2>🏆 榮譽集點卡</h2>
             <div style="font-size: 3.5rem; color: #d69e2e; font-weight:bold;">⭐ <span id="total-stars">0</span> 點</div>
             <p style="color: var(--text-sub);">集點原則：得分率 50%↓拿1點 | 51-68%拿2點 | 69-80%拿3點 | 81-99%拿4點 | 100%拿5點！</p>
-            
             <hr style="border: 1px dashed #cbd5e0; margin: 20px 0;">
-            
             <h3 style="color: var(--accent);">📊 每月學習狀況分析百分比</h3>
             <p>聽力辨識正確率： <strong id="stat-listen">0%</strong></p>
             <p>拼字正確率： <strong id="stat-spell">0%</strong></p>
@@ -285,7 +261,6 @@
         </div>
     </div>
 
-    <!-- 5. 即時字典查詢 -->
     <div id="page-dict" class="page">
         <div class="card">
             <h2>🔍 魔法即時查詢</h2>
@@ -297,7 +272,6 @@
         </div>
     </div>
 
-    <!-- 6. 學習網站與兒歌資源區 -->
     <div id="page-resources" class="page">
         <div class="card">
             <h2>🌐 免費國小英文學習網站</h2>
@@ -338,7 +312,6 @@
 </div>
 
 <script>
-    // --- 翰林小四單字與寶可夢題庫 ---
     const vocabulary = [
         { en: "sunny", ch: "晴朗的" }, { en: "rainy", ch: "下雨的" }, { en: "cloudy", ch: "多雲的" }, { en: "windy", ch: "刮風的" },
         { en: "math", ch: "數學" }, { en: "English", ch: "英文" }, { en: "art", ch: "美術" }, { en: "music", ch: "音樂" },
@@ -348,14 +321,13 @@
         { en: "Pikachu", ch: "皮卡丘" }, { en: "Eevee", ch: "伊布" }, { en: "Snorlax", ch: "卡比獸" }, { en: "Charizard", ch: "噴火龍" }
     ];
 
-    let currentVoice = 'en-US'; // 預設美式
+    let currentVoice = 'en-US';
     let synth = window.speechSynthesis;
     let activeTasks = [];
     let taskIndex = 0;
     let correctCount = 0;
     let stats = { listen: 0, spell: 0, phonics: 0, total_listen: 0, total_spell: 0, total_phonics: 0, stars: 0 };
 
-    // --- 頁面切換 ---
     function switchPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -364,7 +336,6 @@
         if(pageId === 'page-points') updateDashboard();
     }
 
-    // --- 語音設定 ---
     function toggleVoice() {
         currentVoice = currentVoice === 'en-US' ? 'en-GB' : 'en-US';
         document.getElementById('voiceName').innerText = currentVoice === 'en-US' ? '美式女聲 (US)' : '英式女聲 (UK)';
@@ -375,14 +346,13 @@
         if (synth.speaking) synth.cancel();
         let utter = new SpeechSynthesisUtterance(text);
         utter.lang = currentVoice;
-        utter.rate = 0.85; // 稍慢，適合兒童聽力
+        utter.rate = 0.85;
         let voices = synth.getVoices();
         let femaleVoice = voices.find(v => v.lang.includes(currentVoice) && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google')));
         if(femaleVoice) utter.voice = femaleVoice;
         synth.speak(utter);
     }
 
-    // --- 得分音效 (Web Audio API) ---
     function playAudioTone(isCorrect) {
         try {
             let ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -403,19 +373,16 @@
         } catch(e) {}
     }
 
-    // --- 啟動每日闖關 (包含四大模式與週一寶可夢) ---
     function startDaily(dayType) {
         activeTasks = [];
         correctCount = 0;
         let pool = [...vocabulary].sort(() => 0.5 - Math.random());
         
-        // 四大練習模式各出一題
-        activeTasks.push({ type: 'mode1', word: pool[0] }); // 看單字試著發音
-        activeTasks.push({ type: 'mode2', word: pool[1] }); // 聽發音拼字
-        activeTasks.push({ type: 'mode3', word: pool[2] }); // 聽發音選單字
-        activeTasks.push({ type: 'mode4', word: pool[3] }); // 聽中文拼英文
+        activeTasks.push({ type: 'mode1', word: pool[0] });
+        activeTasks.push({ type: 'mode2', word: pool[1] });
+        activeTasks.push({ type: 'mode3', word: pool[2] });
+        activeTasks.push({ type: 'mode4', word: pool[3] });
 
-        // 若點擊第3天（週一），加入寶可夢隱藏挑戰
         if(dayType === 1) {
             let pkm = pokemons[Math.floor(Math.random() * pokemons.length)];
             activeTasks.push({ type: 'pokemon', word: pkm });
@@ -525,10 +492,9 @@
         loadTaskCard();
     }
 
-    // --- 結算與集點規則計算 ---
     function finishDailyChallenge() {
         let rate = correctCount / activeTasks.length;
-        let points = 1; // 預設 50%以下 1點
+        let points = 1;
         if (rate === 1) points = 5;
         else if (rate >= 0.81) points = 4;
         else if (rate >= 0.69) points = 3;
@@ -548,7 +514,6 @@
         speakText("Great job! You earned stars!");
     }
 
-    // --- 更新集點卡與雷達數據 ---
     function updateDashboard() {
         document.getElementById('total-stars').innerText = stats.stars;
         document.getElementById('stat-listen').innerText = stats.total_listen ? Math.round((stats.listen / stats.total_listen)*100) + "%" : "0%";
@@ -556,7 +521,6 @@
         document.getElementById('stat-phonics').innerText = stats.total_phonics ? Math.round((stats.phonics / stats.total_phonics)*100) + "%" : "0%";
     }
 
-    // --- 即時字典查詢 ---
     function queryDictionary() {
         let q = document.getElementById('dict-query').value.trim();
         if(!q) return;
