@@ -1,190 +1,574 @@
 <!DOCTYPE html>
-<html lang="zh-Hant"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Sound It Out">
-<title>Sound It Out 兩週拼讀練習</title>
-<style>
-:root{--bg:#fffaf0;--card:#fff;--ink:#2b2b3a;--mut:#6b6b80;--a:#e8590c;--b:#2f6fe4;--ok:#2b9a4a;--bad:#d63a3f;--line:#eadfce;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1b22;--card:#2a2933;--ink:#f3f1ea;--mut:#a9a7b8;--a:#ff8a4c;--b:#6ea1ff;--ok:#4cc16c;--bad:#ff6b70;--line:#3d3b4a}}
-:root[data-theme="dark"]{--bg:#1c1b22;--card:#2a2933;--ink:#f3f1ea;--mut:#a9a7b8;--a:#ff8a4c;--b:#6ea1ff;--ok:#4cc16c;--bad:#ff6b70;--line:#3d3b4a}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
-#app{max-width:640px;margin:0 auto;padding:14px}
-h1{font-size:22px;margin:4px 0 8px}
-.tabs,.chips{display:flex;margin-bottom:10px;flex-wrap:wrap}
-.tab,.chip,.btn{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;font:inherit;cursor:pointer;min-height:48px;padding:8px 14px}
-.chip{min-width:48px;padding:8px 0}
-.tab{flex:1;font-weight:700}
-.tab.on,.chip.on{border-color:var(--b);background:var(--b);color:#fff}
-.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px;text-align:center}
-.word{font-size:72px;font-weight:800;letter-spacing:2px;margin:6px 0;word-break:break-word}
-.on1{color:var(--a)}.rm{color:var(--b)}
-.hint{font-size:48px;margin:0}.zh{color:var(--mut);margin:4px 0 12px;font-size:18px}
-.row{display:flex;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.btn.big{font-size:20px;font-weight:700;min-width:140px;min-height:56px}
-.btn.go{background:var(--ok);border-color:var(--ok);color:#fff}
-.btn.no{background:var(--bad);border-color:var(--bad);color:#fff}
-.btn.snd{background:var(--b);border-color:var(--b);color:#fff}
-.slots{display:flex;justify-content:center;flex-wrap:wrap;margin:14px 0;min-height:60px}
-.slot{width:42px;height:56px;border-bottom:4px solid var(--line);font-size:34px;font-weight:800}
-.tiles{display:flex;justify-content:center;flex-wrap:wrap}
-.tile{width:54px;height:58px;border-radius:12px;border:2px solid var(--b);background:var(--card);color:var(--b);font-size:30px;font-weight:800;cursor:pointer}
-.tile:disabled{opacity:.25}
-.msg{min-height:28px;font-weight:700;margin-top:10px;font-size:18px}
-.ok{color:var(--ok)}.bad{color:var(--bad)}
-.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-#stat,.small{color:var(--mut);font-size:14px;text-align:center}
-.plan{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:8px 12px;margin-bottom:10px;font-size:15px}
-.tabs>*,.chips>*{margin:0 6px 8px 0}.row>*{margin:6px}.slots>*{margin:3px}.tiles>*{margin:5px}
-</style></head><body><div id="app">
-<h1>Sound It Out 兩週拼讀練習</h1>
-<div class="chips" id="who"></div>
-<div class="chips" id="days"></div>
-<div class="plan" id="plan"></div>
-<div class="tabs" id="tabs"></div>
-<div class="card" id="main"></div><p id="stat"></p>
-<p class="small">每天約 15–20 分鐘：先練「拼讀說話」，再練「拼字」，有「長短音」就一起做，最後放鬆一下。沒有聲音時請檢查 iPad 靜音鍵。進度存在這台 iPad 的 Safari 裡，請固定用同一個瀏覽器，不要用無痕模式。</p>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小四英文魔法冒險島</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --primary: #ff758c;
+            --secondary: #ff7eb3;
+            --accent: #4facfe;
+            --success: #00f2fe;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-sub: #718096;
+        }
+        body {
+            font-family: "Comic Sans MS", "微軟正黑體", sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container { width: 100%; max-width: 650px; }
+        
+        /* 頂部標題與導航 */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+            margin-bottom: 15px;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .nav-btn {
+            background: #edf2f7;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            color: var(--text-sub);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav-btn.active, .nav-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* 卡片設計 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            text-align: center;
+            border: 3px solid #ffe3ed;
+        }
+
+        /* 語音設定列 */
+        .settings-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .toggle-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* 日曆闖關網格 (週六到週四複習，週五休息) */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .day-box {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 2px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .day-box:hover:not(.disabled) {
+            background: #ebf8ff;
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+        .day-box.rest {
+            background: #edf2f7;
+            color: #a0aec0;
+            border-color: #cbd5e0;
+            cursor: not-allowed;
+        }
+        .day-header { font-weight: bold; color: var(--primary); font-size: 0.85rem; }
+
+        /* 互動題目區 */
+        .big-word { font-size: 2.8rem; color: var(--primary); margin: 15px 0; font-weight: bold; }
+        .action-btn {
+            background: linear-gradient(135deg, #6ee7b7 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            margin: 8px;
+        }
+        .action-btn:hover { opacity: 0.9; }
+        .input-box {
+            font-size: 1.4rem;
+            padding: 10px;
+            width: 80%;
+            max-width: 280px;
+            text-align: center;
+            border: 3px dashed var(--accent);
+            border-radius: 15px;
+            outline: none;
+            margin: 10px 0;
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .option-btn {
+            background: white;
+            border: 2px solid var(--accent);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-main);
+            transition: 0.2s;
+        }
+        .option-btn:hover { background: #ebf8ff; }
+
+        /* 延伸學習與資源清單 */
+        .resource-item {
+            background: #f7fafc;
+            border-left: 5px solid var(--accent);
+            padding: 12px;
+            margin: 10px 0;
+            text-align: left;
+            border-radius: 0 10px 10px 0;
+        }
+        .resource-item a { color: #3182ce; text-decoration: none; font-weight: bold; }
+        .resource-item a:hover { text-decoration: underline; }
+
+        .feedback { font-size: 1.3rem; font-weight: bold; min-height: 30px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>🌟 小四英文魔法冒險島 🌟</header>
+
+    <!-- 導航列 -->
+    <div class="nav-bar">
+        <button class="nav-btn active" onclick="switchPage('page-map')">🗺️ 闖關地圖</button>
+        <button class="nav-btn" onclick="switchPage('page-root')">✨ 本週字根魔法</button>
+        <button class="nav-btn" onclick="switchPage('page-points')">🏆 集點卡與分析</button>
+        <button class="nav-btn" onclick="switchPage('page-dict')">🔍 即時查單字</button>
+        <button class="nav-btn" onclick="switchPage('page-resources')">📚 學習與兒歌區</button>
+    </div>
+
+    <!-- 1. 闖關地圖頁面 -->
+    <div id="page-map" class="page active">
+        <div class="settings-bar">
+            <span>🗣️ 語音：<strong id="voiceName">美式女聲 (US)</strong></span>
+            <button class="toggle-btn" onclick="toggleVoice()">切換英/美音</button>
+        </div>
+        <div class="card">
+            <h3>📅 第 1 個月：每週 6 天魔法修練</h3>
+            <p style="color: var(--text-sub); font-size: 0.9rem;">提示：週六至週四每天 15 分鐘闖關，週五是家教日休息喔！</p>
+            
+            <div class="calendar-grid">
+                <div class="day-header">六</div><div class="day-header">日</div><div class="day-header">一</div><div class="day-header">二</div><div class="day-header">三</div><div class="day-header">四</div><div class="day-header">五</div>
+                <!-- 星期順序：六、日、一、二、三、四、五 -->
+                <div class="day-box" onclick="startDaily(6)">第1天<br>⭐</div>
+                <div class="day-box" onclick="startDaily(0)">第2天<br>⭐</div>
+                <div class="day-box" onclick="startDaily(1)" style="background:#fffaf0; border-color:#ecc94b;">第3天<br>⚡寶可夢</div>
+                <div class="day-box" onclick="startDaily(2)">第4天<br>⭐</div>
+                <div class="day-box" onclick="startDaily(3)">第5天<br>⭐</div>
+                <div class="day-box" onclick="startDaily(4)">第6天<br>⭐</div>
+                <div class="day-box rest">休息日<br>☕家教</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 實際任務闖關頁面 -->
+    <div id="page-task" class="page">
+        <div class="card">
+            <h3 id="task-title" style="color: var(--primary);">任務進行中</h3>
+            <div id="task-instruction" style="color: var(--text-sub); margin-bottom: 10px;"></div>
+            
+            <div id="task-content"></div>
+            
+            <div class="feedback" id="task-feedback"></div>
+            <button id="next-btn" class="action-btn" style="display:none;" onclick="nextTask()">下一題 ➡️</button>
+        </div>
+    </div>
+
+    <!-- 3. 本週字根魔法 (延伸背誦學習) -->
+    <div id="page-root" class="page">
+        <div class="card">
+            <h2 style="color: var(--primary);">🪄 本週字根魔法：【 in 】</h2>
+            <p>「in」代表「裡面、進入」！看看英文單字怎麼像積木一樣組裝起來：</p>
+            <div style="background:#f7fafc; padding:15px; border-radius:15px; margin:15px 0; text-align:left;">
+                <h3 style="margin:0; color:#3182ce;">in + door ➔ indoor</h3>
+                <p style="margin:5px 0;">(在門裡面) ➡️ <strong>室內的</strong></p>
+                <button class="toggle-btn" style="margin-top:5px;" onclick="speakText('indoor')">🔊 聽發音</button>
+            </div>
+            <div style="background:#f7fafc; padding:15px; border-radius:15px; margin:15px 0; text-align:left;">
+                <h3 style="margin:0; color:#3182ce;">inter + net ➔ internet</h3>
+                <p style="margin:5px 0;">(在互相連接的網中) ➡️ <strong>網際網路</strong></p>
+                <button class="toggle-btn" style="margin-top:5px;" onclick="speakText('internet')">🔊 聽發音</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #d69e2e;">🔢 本週數字魔法：【 -ty 結尾 】</h2>
+            <p>數字後面加上 <strong>-ty</strong>，就變成「整十」囉！</p>
+            <ul style="text-align:left; font-size:1.1rem; line-height:1.8;">
+                <li>6 (six) ➔ 60 (six<b>ty</b>)</li>
+                <li>7 (seven) ➔ 70 (seven<b>ty</b>)</li>
+                <li>9 (nine) ➔ 90 (nine<b>ty</b>)</li>
+            </ul>
+            <button class="action-btn" onclick="speakText('sixty seventy ninety')">🔊 聽聽數字發音</button>
+        </div>
+    </div>
+
+    <!-- 4. 我的集點卡與數據分析 -->
+    <div id="page-points" class="page">
+        <div class="card">
+            <h2>🏆 榮譽集點卡</h2>
+            <div style="font-size: 3.5rem; color: #d69e2e; font-weight:bold;">⭐ <span id="total-stars">0</span> 點</div>
+            <p style="color: var(--text-sub);">集點原則：得分率 50%↓拿1點 | 51-68%拿2點 | 69-80%拿3點 | 81-99%拿4點 | 100%拿5點！</p>
+            
+            <hr style="border: 1px dashed #cbd5e0; margin: 20px 0;">
+            
+            <h3 style="color: var(--accent);">📊 每月學習狀況分析百分比</h3>
+            <p>聽力辨識正確率： <strong id="stat-listen">0%</strong></p>
+            <p>拼字正確率： <strong id="stat-spell">0%</strong></p>
+            <p>自然發音對應率： <strong id="stat-phonics">0%</strong></p>
+        </div>
+    </div>
+
+    <!-- 5. 即時字典查詢 -->
+    <div id="page-dict" class="page">
+        <div class="card">
+            <h2>🔍 魔法即時查詢</h2>
+            <p>輸入英文單字，立刻聽發音與查中文含意！</p>
+            <input type="text" id="dict-query" class="input-box" placeholder="例如: sunny">
+            <br>
+            <button class="action-btn" onclick="queryDictionary()">查詢與發音</button>
+            <div id="dict-output" style="font-size: 1.3rem; margin-top:20px; font-weight:bold; color:var(--primary);"></div>
+        </div>
+    </div>
+
+    <!-- 6. 學習網站與兒歌資源區 -->
+    <div id="page-resources" class="page">
+        <div class="card">
+            <h2>🌐 免費國小英文學習網站</h2>
+            <div class="resource-item">
+                <a href="https://www.coolenglish.edu.tw" target="_blank">1. CoolEnglish 英語線上學習平台</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">教育部專為台灣學童打造，結合課綱、字彙與語音辨識闖關。</p>
+            </div>
+            <div class="resource-item">
+                <a href="https://www.starfall.com" target="_blank">2. Starfall 自然發音網</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">自然發音與字母拼讀的神級互動網站，解決字音分離。</p>
+            </div>
+            <div class="resource-item">
+                <a href="https://www.teachyourmonstertoread.com" target="_blank">3. Teach Your Monster to Read</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">精緻的小怪獸自然發音冒險闖關遊戲（網頁版免費）。</p>
+            </div>
+            <div class="resource-item">
+                <a href="https://www.littlefox.com" target="_blank">4. Little Fox 分級動畫故事</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">豐富的英文動畫故事，無負擔培養聽力與語感。</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎵 推薦英文學習歌曲頻道 (YouTube)</h2>
+            <div class="resource-item">
+                <a href="https://www.youtube.com/@SuperSimpleSongs" target="_blank">1. Super Simple Songs</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">咬字極度清晰、節奏溫和，國小低中年級最愛的經典兒歌。</p>
+            </div>
+            <div class="resource-item">
+                <a href="https://www.youtube.com/@Pinkfong" target="_blank">2. Pinkfong (碰碰狐)</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">充滿活力的自然發音歌與主題單字律動影片。</p>
+            </div>
+            <div class="resource-item">
+                <a href="https://www.youtube.com/@MapleLeafLearning" target="_blank">3. Maple Leaf Learning</a>
+                <p style="margin:5px 0 0 0; font-size:0.85rem; color:var(--text-sub);">專為英語學習設計的原創歌曲，主題包含時間、數字與生活對話。</p>
+            </div>
+        </div>
+    </div>
 </div>
+
 <script>
-const P=(s,f)=>s.trim().split("\n").map(l=>{const a=l.split("|");return{t:a[0],zh:a[1]||"",em:a[2]||"",s:a[3]||a[0],f}});
-const f1=P(`dad|爸爸|👨
-mad|生氣|😠
-bat|蝙蝠|🦇
-cat|貓|🐱
-hen|母雞|🐔
-pen|筆|🖊️
-net|網子|🥅
-vet|獸醫|💉
-pig|豬|🐷
-wig|假髮
-sit|坐|💺
-kit|工具組|🧰`,1);
-const f2=P(`hot|熱|🔥
-pot|鍋子|🍲
-box|盒子|📦
-fox|狐狸|🦊
-mug|馬克杯|☕
-bug|小蟲|🐞
-bun|小圓麵包|🍞
-run|跑|🏃`,1);
-const FAM=["ad","at","en","et","ig","it","ot","ox","ug","un"];
-const ie=P(`pin|別針|📌
-win|贏|🏆
-kite|風箏
-pine|松樹|🌲
-wine|葡萄酒
-pet|寵物|🐶
-jet|噴射機|✈️`);
-const ae=P(`cake|蛋糕|🍰
-name|名字|🏷️
-make|做|🔨
-game|遊戲|🎮
-see|看見|👀
-tree|樹|🌳
-bee|蜜蜂|🐝
-green|綠色|💚`);
-const wx=P(`cloudy|多雲的|☁️
-rainy|下雨的|🌧️
-sunny|晴朗的|☀️
-windy|有風的|💨
-cold|冷|🥶
-hot|熱|🔥`);
-const wxs=P(`How’s the weather?|天氣如何？||How's the weather?
-It’s sunny.|晴天|☀️|It's sunny.
-It’s rainy.|雨天|🌧️|It's rainy.
-It’s cold.|很冷|🥶|It's cold.`);
-const n1=P(`one|1
-two|2
-three|3
-four|4
-five|5
-six|6
-seven|7
-eight|8
-nine|9
-ten|10
-eleven|11
-twelve|12
-thirteen|13
-fourteen|14
-fifteen|15
-sixteen|16
-seventeen|17
-eighteen|18
-nineteen|19
-twenty|20`);
-const n2=P(`twenty|20
-thirty|30
-forty|40
-fifty|50
-sixty|60
-seventy|70
-eighty|80
-ninety|90
-one hundred|100`);
-const tm=P(`It’s twelve o’clock.|12:00|🕛|It's twelve o'clock.
-It’s twelve thirty.|12:30|🕧|It's twelve thirty.
-It’s three o’clock.|3:00|🕒|It's three o'clock.
-It’s six thirty.|6:30|🕡|It's six thirty.
-It’s eight o’clock.|8:00|🕗|It's eight o'clock.
-What time is it?|現在幾點？||What time is it?`);
-const SI=[["kit","i",0],["pin","i",0],["win","i",0],["big","i",0],["sit","i",0],["kite","i",1],["pine","i",1],["wine","i",1],["bike","i",1],["five","i",1],["pet","e",0],["jet","e",0],["Ted","e",0],["Pete","e",1],["theme","e",1]];
-const SA=[["cat","a",0],["bat","a",0],["dad","a",0],["cake","a",1],["name","a",1],["make","a",1],["game","a",1]];
-const BL=[
-{n:"短母音字族＋天氣",say:[...f1,...wx,...wxs],spell:[...f1,...wx],sort:[]},
-{n:"字族 o／u＋數字 1–20",say:[...f2,...n1],spell:[...f2,...n1.slice(10)],sort:[]},
-{n:"魔術 e（i／e）＋整十數字",say:[...ie,...n2],spell:[...ie,...n2.slice(0,8)],sort:SI},
-{n:"魔術 e（a）／ee＋時間（a_e、ee 字表為暫定，之後可換成課本的字）",say:[...ae,...tm],spell:[...ae],sort:SA}];
-const fm=(a,f)=>[].concat.apply([],a.map(f));
-const uq=(m)=>{const s=new Set();return fm(BL,b=>b[m]).filter(x=>{const k=x.t||x[0];if(s.has(k))return false;s.add(k);return true})};
-BL.push({n:"總複習：全部混合，第 14 天做小考",say:uq("say"),spell:uq("spell"),sort:uq("sort")});
-const POK="Pikachu Charmander Squirtle Bulbasaur Eevee Snorlax Jigglypuff Psyduck Meowth Mew".split(" ").map(t=>({t,zh:"放鬆時間：先自己念，再聽聽看",em:"⚡",s:t}));
-const $=s=>document.querySelector(s);
-let PF=[],cur="",S={};
-try{PF=JSON.parse(localStorage.getItem("sq3p")||"[]");cur=localStorage.getItem("sq3c")||""}catch(e){}
-if(!PF.length)PF=["哥哥","妹妹"];if(PF.indexOf(cur)<0)cur=PF[0];
-const save=()=>{try{localStorage.setItem("sq3:"+cur,JSON.stringify(S));localStorage.setItem("sq3p",JSON.stringify(PF));localStorage.setItem("sq3c",cur)}catch(e){}};
-const load=()=>{S={};try{S=JSON.parse(localStorage.getItem("sq3:"+cur)||"{}")}catch(e){}};load();
-const esc=t=>t.replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
-function who(n){cur=PF[n];save();load();day=S._day||1;mode="say";head();start()}
-function addWho(){var n=(prompt("新增小朋友的名字")||"").trim().slice(0,8);if(!n||PF.indexOf(n)>=0||PF.length>=6)return;PF.push(n);cur=n;save();load();day=1;mode="say";head();start()}
-const DAY=864e5,GAP=[0,0,1,3,7,14];
-const K=(m,x)=>m+":"+(x.t||x[0]);
-const due=k=>!S[k]||S[k].d<=Date.now();
-function rec(k,ok){const r=S[k]||{b:0,d:0};r.b=ok?Math.min(5,r.b+1):1;r.d=ok?Date.now()+GAP[r.b]*DAY:0;S[k]=r;save()}
-const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
-function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.7;const v=speechSynthesis.getVoices().find(v=>/en[-_]US/.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
-let day=S._day||1,mode="say",Q=[],i=0,right=0,heard=false,used=[],L=[];
-const blk=()=>day<=3?0:day<=6?1:day<=9?2:day<=12?3:4;
-function pool(m){if(m==="relax")return POK;const b=blk();let c=BL[b][m]||[];if(b>0&&b<4){const e=fm(BL.slice(0,b),x=>x[m]||[]).filter(x=>due(K(m,x)));c=c.concat(shuf(e).slice(0,4))}return c}
-function head(){$("#who").innerHTML=PF.map((p,n)=>`<button class="chip ${p===cur?"on":""}" style="padding:8px 14px" onclick="who(${n})">${esc(p)}</button>`).join("")+`<button class="chip" style="padding:8px 14px" onclick="addWho()">＋ 新增</button>`;$("#days").innerHTML=Array.from({length:14},(_,n)=>`<button class="chip ${day===n+1?"on":""}" onclick="day=${n+1};S._day=day;save();head();if(!pool(mode).length)mode='say';start()">${n+1}</button>`).join("");
-$("#plan").innerHTML=`<b>第 ${day} 天</b>｜${BL[blk()].n}`;
-const T=[["say","拼讀說話"],["spell","拼字"],["sort","長短音"],["relax","放鬆"]].filter(t=>pool(t[0]).length);
-$("#tabs").innerHTML=T.map(t=>`<button class="tab ${mode===t[0]?"on":""}" onclick="mode='${t[0]}';head();start()">${t[1]}</button>`).join("")}
-function start(){let p=pool(mode);let d=p.filter(x=>due(K(mode,x)));if(d.length<6)d=p;Q=shuf(d).slice(0,10);i=0;right=0;render()}
-function stat(){const p=pool(mode);$("#stat").textContent=mode==="relax"?"":`這個練習已熟練 ${p.filter(x=>(S[K(mode,x)]||{}).b>=3).length} / ${p.length}（連續答對 3 次算熟練，答錯的明天會再出現）`}
-function done(){$("#main").innerHTML=`<div class="hint">🌟</div><h2>這一輪完成了！</h2><p>${mode==="relax"?"":`答對 ${right} / ${Q.length}`}</p><div class="row"><button class="btn big go" onclick="start()">再練一輪</button></div>`;stat()}
-function next(){i++;render()}
-function render(){heard=false;stat();if(i>=Q.length)return done();({say:rSay,spell:rSpell,sort:rSort,relax:rSay})[mode]()}
-function rSay(){const x=Q[i];let w=x.t,h=`<span class="rm">${w}</span>`;
-if(x.f){const r=FAM.find(f=>w.endsWith(f));h=`<span class="on1">${w.slice(0,-r.length)}</span><span class="rm">${r}</span>`}
-const fs=w.length>10?30:w.length>7?48:72;
-$("#main").innerHTML=`<div class="small">${i+1} / ${Q.length}　先自己念念看，再按喇叭確認</div><p class="hint">${x.em}</p><div class="word" style="font-size:${fs}px">${h}</div><div class="zh">${x.zh}</div><div class="row"><button class="btn big snd" onclick="hear()">🔊 聽聽看</button></div><div class="row" id="ans"></div>`}
-function hear(){say(Q[i].s);if(!heard){heard=true;$("#ans").innerHTML=mode==="relax"?`<button class="btn big go" onclick="next()">下一個</button>`:`<button class="btn big go" onclick="rec(K(mode,Q[i]),1);right++;next()">我念對了 ✓</button><button class="btn big no" onclick="rec(K(mode,Q[i]),0);next()">再練 ✗</button>`}}
-function rSpell(){const x=Q[i],w=x.t;used=[];const ex=shuf("abcdefghilmnoprstuwy".split("")).slice(0,2);
-L=shuf([...w.replace(/ /g,"").split(""),...ex]);
-$("#main").innerHTML=`<div class="small">${i+1} / ${Q.length}</div><p class="hint">${x.em}</p><div class="zh">${x.zh}</div><div class="row"><button class="btn big snd" onclick="say(Q[i].s)">🔊 聽發音</button></div><div class="slots" id="sl"></div><div class="tiles" id="ti"></div><div class="row"><button class="btn" onclick="used.pop();draw()">⌫ 倒退</button></div><div class="msg" id="msg"></div>`;draw()}
-function draw(){const w=Q[i].t.replace(/ /g,"");$("#sl").innerHTML=w.split("").map((_,n)=>`<div class="slot">${used[n]!==undefined?L[used[n]]:""}</div>`).join("");
-$("#ti").innerHTML=L.map((c,n)=>`<button class="tile" ${used.includes(n)?"disabled":""} onclick="pick(${n})">${c}</button>`).join("")}
-function pick(n){const x=Q[i],w=x.t.replace(/ /g,"");if(used.length>=w.length)return;used.push(n);draw();if(used.length===w.length){const ok=used.map(k=>L[k]).join("")===w;rec(K("spell",x),ok);if(ok)right++;
-$("#msg").innerHTML=ok?`<span class="ok">答對了！${x.t} ⭐</span>`:`<span class="bad">差一點，正確是 ${x.t}</span>`;if(!ok)$("#sl").classList.add("shake");say(x.s);
-$("#ti").innerHTML=`<button class="btn big go" onclick="next()">下一個</button>`}}
-function rSort(){const [w,v]=Q[i];
-$("#main").innerHTML=`<div class="small">${i+1} / ${Q.length}　先念念看，再判斷 ${v} 是短音還是長音</div><div class="word">${w}</div><div class="row"><button class="btn big snd" onclick="say('${w}')">🔊 聽聽看</button></div><div class="row"><button class="btn big" onclick="ans(0)">短音 ${v}</button><button class="btn big" onclick="ans(1)">長音（念字母名）</button></div><div class="msg" id="msg"></div>`}
-function ans(g){const [w,v,l]=Q[i],ok=g===l;rec(K("sort",Q[i]),ok);if(ok)right++;say(w);
-const rule=l?`${w} 結尾有「魔術 e」，所以 ${v} 念長音。`:`${w} 的 ${v} 後面沒有魔術 e，所以 ${v} 念短音。`;
-$("#msg").innerHTML=`<span class="${ok?"ok":"bad"}">${ok?"答對了！":"再想想！"}</span><br>${rule}`;
-$("#main").insertAdjacentHTML("beforeend",`<div class="row"><button class="btn big go" onclick="next()">下一個</button></div>`)}
-head();start();
-</script></body></html>
+    // --- 翰林小四單字與寶可夢題庫 ---
+    const vocabulary = [
+        { en: "sunny", ch: "晴朗的" }, { en: "rainy", ch: "下雨的" }, { en: "cloudy", ch: "多雲的" }, { en: "windy", ch: "刮風的" },
+        { en: "math", ch: "數學" }, { en: "English", ch: "英文" }, { en: "art", ch: "美術" }, { en: "music", ch: "音樂" },
+        { en: "thirty", ch: "三十" }, { en: "forty", ch: "四十" }, { en: "breakfast", ch: "早餐" }, { en: "lunch", ch: "午餐" }
+    ];
+    const pokemons = [
+        { en: "Pikachu", ch: "皮卡丘" }, { en: "Eevee", ch: "伊布" }, { en: "Snorlax", ch: "卡比獸" }, { en: "Charizard", ch: "噴火龍" }
+    ];
+
+    let currentVoice = 'en-US'; // 預設美式
+    let synth = window.speechSynthesis;
+    let activeTasks = [];
+    let taskIndex = 0;
+    let correctCount = 0;
+    let stats = { listen: 0, spell: 0, phonics: 0, total_listen: 0, total_spell: 0, total_phonics: 0, stars: 0 };
+
+    // --- 頁面切換 ---
+    function switchPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        event.currentTarget.classList.add('active');
+        if(pageId === 'page-points') updateDashboard();
+    }
+
+    // --- 語音設定 ---
+    function toggleVoice() {
+        currentVoice = currentVoice === 'en-US' ? 'en-GB' : 'en-US';
+        document.getElementById('voiceName').innerText = currentVoice === 'en-US' ? '美式女聲 (US)' : '英式女聲 (UK)';
+        speakText("Hello");
+    }
+
+    function speakText(text) {
+        if (synth.speaking) synth.cancel();
+        let utter = new SpeechSynthesisUtterance(text);
+        utter.lang = currentVoice;
+        utter.rate = 0.85; // 稍慢，適合兒童聽力
+        let voices = synth.getVoices();
+        let femaleVoice = voices.find(v => v.lang.includes(currentVoice) && (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Google')));
+        if(femaleVoice) utter.voice = femaleVoice;
+        synth.speak(utter);
+    }
+
+    // --- 得分音效 (Web Audio API) ---
+    function playAudioTone(isCorrect) {
+        try {
+            let ctx = new (window.AudioContext || window.webkitAudioContext)();
+            let osc = ctx.createOscillator();
+            let gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            if(isCorrect) {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(600, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1000, ctx.currentTime + 0.15);
+            } else {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(250, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+            }
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
+            osc.stop(ctx.currentTime + 0.3);
+        } catch(e) {}
+    }
+
+    // --- 啟動每日闖關 (包含四大模式與週一寶可夢) ---
+    function startDaily(dayType) {
+        activeTasks = [];
+        correctCount = 0;
+        let pool = [...vocabulary].sort(() => 0.5 - Math.random());
+        
+        // 四大練習模式各出一題
+        activeTasks.push({ type: 'mode1', word: pool[0] }); // 看單字試著發音
+        activeTasks.push({ type: 'mode2', word: pool[1] }); // 聽發音拼字
+        activeTasks.push({ type: 'mode3', word: pool[2] }); // 聽發音選單字
+        activeTasks.push({ type: 'mode4', word: pool[3] }); // 聽中文拼英文
+
+        // 若點擊第3天（週一），加入寶可夢隱藏挑戰
+        if(dayType === 1) {
+            let pkm = pokemons[Math.floor(Math.random() * pokemons.length)];
+            activeTasks.push({ type: 'pokemon', word: pkm });
+        }
+
+        taskIndex = 0;
+        switchPage('page-task');
+        loadTaskCard();
+    }
+
+    function loadTaskCard() {
+        if(taskIndex >= activeTasks.length) {
+            finishDailyChallenge();
+            return;
+        }
+
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('task-feedback').innerText = '';
+        let content = document.getElementById('task-content');
+        content.innerHTML = '';
+        
+        let t = activeTasks[taskIndex];
+        document.getElementById('task-title').innerText = `闖關進度：第 ${taskIndex + 1} / ${activeTasks.length} 題`;
+
+        if(t.type === 'mode1') {
+            document.getElementById('task-instruction').innerText = "練習 1：看單字試著發音，唸完後按喇叭核對";
+            content.innerHTML = `
+                <div class="big-word">${t.word.en}</div>
+                <div style="color:var(--text-sub); font-size:1.2rem;">(${t.word.ch})</div>
+                <button class="action-btn" onclick="speakText('${t.word.en}')">🔊 聽標準發音</button>
+                <br><br>
+                <button class="action-btn" style="background:var(--primary);" onclick="submitAnswer(true, 'phonics')">我唸對了！👍</button>
+            `;
+        } else if(t.type === 'mode2') {
+            document.getElementById('task-instruction').innerText = "練習 2：聽發音試著在下方輸入拼出正確英文單字";
+            content.innerHTML = `
+                <button class="action-btn" onclick="speakText('${t.word.en}')">🔊 播放發音</button><br>
+                <input type="text" id="ans-input" class="input-box" placeholder="請輸入英文..."><br>
+                <button class="action-btn" onclick="checkTypedAnswer('${t.word.en}', 'spell')">送出答案</button>
+            `;
+            speakText(t.word.en);
+        } else if(t.type === 'mode3') {
+            document.getElementById('task-instruction').innerText = "練習 3：聽發音選出正確的英文單字";
+            let opts = [t.word];
+            while(opts.length < 4) {
+                let r = vocabulary[Math.floor(Math.random() * vocabulary.length)];
+                if(!opts.includes(r)) opts.push(r);
+            }
+            opts.sort(() => 0.5 - Math.random());
+            let html = `<button class="action-btn" onclick="speakText('${t.word.en}')">🔊 播放發音</button><div class="options-grid">`;
+            opts.forEach(o => {
+                html += `<button class="option-btn" onclick="checkChoice('${o.en}', '${t.word.en}', 'listen')">${o.en}</button>`;
+            });
+            html += `</div>`;
+            content.innerHTML = html;
+            speakText(t.word.en);
+        } else if(t.type === 'mode4') {
+            document.getElementById('task-instruction').innerText = `練習 4：聽中文提示，拼寫出對應的英文單字`;
+            content.innerHTML = `
+                <div class="big-word" style="font-size:2rem; color:var(--text-sub);">${t.word.ch}</div>
+                <input type="text" id="ans-input" class="input-box" placeholder="請輸入英文單字..."><br>
+                <button class="action-btn" onclick="checkTypedAnswer('${t.word.en}', 'spell')">送出答案</button>
+            `;
+            speakText(t.word.ch);
+        } else if(t.type === 'pokemon') {
+            document.getElementById('task-instruction').innerText = "⚡ 週一寶可夢特別挑戰 ⚡";
+            content.innerHTML = `
+                <div style="background:linear-gradient(135deg, #f6d365 0%, #fda085 100%); padding:20px; border-radius:15px; color:white;">
+                    <h2>神奇寶貝：${t.word.ch}</h2>
+                    <button class="action-btn" style="background:white; color:#e53e3e;" onclick="speakText('${t.word.en}')">🔊 聽英文名字</button><br>
+                    <input type="text" id="ans-input" class="input-box" style="border-color:white; color:black;" placeholder="試著拼出來..."><br>
+                    <button class="action-btn" style="background:#38a169;" onclick="checkTypedAnswer('${t.word.en}', 'spell')">丟出精靈球！</button>
+                </div>
+            `;
+            speakText(t.word.en);
+        }
+    }
+
+    function submitAnswer(isCorrect, statKey) {
+        stats['total_' + statKey]++;
+        let fb = document.getElementById('task-feedback');
+        if(isCorrect) {
+            playAudioTone(true);
+            correctCount++;
+            stats[statKey]++;
+            fb.style.color = '#38a169';
+            fb.innerText = "🎉 太棒了！答對囉！";
+        } else {
+            playAudioTone(false);
+            fb.style.color = '#e53e3e';
+            fb.innerText = "💪 加油！正確答案是：" + activeTasks[taskIndex].word.en;
+        }
+        document.getElementById('next-btn').style.display = 'inline-block';
+    }
+
+    function checkTypedAnswer(correct, statKey) {
+        let val = document.getElementById('ans-input').value.trim().toLowerCase();
+        submitAnswer(val === correct.toLowerCase(), statKey);
+    }
+
+    function checkChoice(selected, correct, statKey) {
+        submitAnswer(selected === correct, statKey);
+    }
+
+    function nextTask() {
+        taskIndex++;
+        loadTaskCard();
+    }
+
+    // --- 結算與集點規則計算 ---
+    function finishDailyChallenge() {
+        let rate = correctCount / activeTasks.length;
+        let points = 1; // 預設 50%以下 1點
+        if (rate === 1) points = 5;
+        else if (rate >= 0.81) points = 4;
+        else if (rate >= 0.69) points = 3;
+        else if (rate >= 0.51) points = 2;
+
+        stats.stars += points;
+
+        document.getElementById('task-title').innerText = "🏁 今日闖關大功告成！";
+        document.getElementById('task-instruction').innerText = "";
+        document.getElementById('task-content').innerHTML = `
+            <div class="big-word">獲得 ⭐ ${points} 點！</div>
+            <p>正確率：${Math.round(rate * 100)}% （答對 ${correctCount} / ${activeTasks.length} 題）</p>
+            <button class="action-btn" onclick="switchPage('page-points')">查看集點卡與分析</button>
+        `;
+        document.getElementById('task-feedback').innerText = "";
+        document.getElementById('next-btn').style.display = 'none';
+        speakText("Great job! You earned stars!");
+    }
+
+    // --- 更新集點卡與雷達數據 ---
+    function updateDashboard() {
+        document.getElementById('total-stars').innerText = stats.stars;
+        document.getElementById('stat-listen').innerText = stats.total_listen ? Math.round((stats.listen / stats.total_listen)*100) + "%" : "0%";
+        document.getElementById('stat-spell').innerText = stats.total_spell ? Math.round((stats.spell / stats.total_spell)*100) + "%" : "0%";
+        document.getElementById('stat-phonics').innerText = stats.total_phonics ? Math.round((stats.phonics / stats.total_phonics)*100) + "%" : "0%";
+    }
+
+    // --- 即時字典查詢 ---
+    function queryDictionary() {
+        let q = document.getElementById('dict-query').value.trim();
+        if(!q) return;
+        speakText(q);
+        let found = vocabulary.find(v => v.en.toLowerCase() === q.toLowerCase() || v.ch === q);
+        let out = document.getElementById('dict-output');
+        if(found) {
+            out.innerText = `${found.en} = ${found.ch}`;
+        } else {
+            out.innerHTML = `查無內建單字，<a href="https://translate.google.com/?sl=auto&tl=zh-TW&text=${q}" target="_blank" style="color:var(--accent);">點此用 Google 字典查詢</a>`;
+        }
+    }
+</script>
+</body>
+</html>
