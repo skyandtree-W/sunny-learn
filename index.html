@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Sound It Out">
+<title>Sound It Out 兩週拼讀練習</title>
+<style>
+:root{--bg:#fffaf0;--card:#fff;--ink:#2b2b3a;--mut:#6b6b80;--a:#e8590c;--b:#2f6fe4;--ok:#2b9a4a;--bad:#d63a3f;--line:#eadfce;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1b22;--card:#2a2933;--ink:#f3f1ea;--mut:#a9a7b8;--a:#ff8a4c;--b:#6ea1ff;--ok:#4cc16c;--bad:#ff6b70;--line:#3d3b4a}}
+:root[data-theme="dark"]{--bg:#1c1b22;--card:#2a2933;--ink:#f3f1ea;--mut:#a9a7b8;--a:#ff8a4c;--b:#6ea1ff;--ok:#4cc16c;--bad:#ff6b70;--line:#3d3b4a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
+#app{max-width:640px;margin:0 auto;padding:14px}
+h1{font-size:22px;margin:4px 0 8px}
+.tabs,.chips{display:flex;margin-bottom:10px;flex-wrap:wrap}
+.tab,.chip,.btn{border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;font:inherit;cursor:pointer;min-height:48px;padding:8px 14px}
+.chip{min-width:48px;padding:8px 0}
+.tab{flex:1;font-weight:700}
+.tab.on,.chip.on{border-color:var(--b);background:var(--b);color:#fff}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px;text-align:center}
+.word{font-size:72px;font-weight:800;letter-spacing:2px;margin:6px 0;word-break:break-word}
+.on1{color:var(--a)}.rm{color:var(--b)}
+.hint{font-size:48px;margin:0}.zh{color:var(--mut);margin:4px 0 12px;font-size:18px}
+.row{display:flex;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.btn.big{font-size:20px;font-weight:700;min-width:140px;min-height:56px}
+.btn.go{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.snd{background:var(--b);border-color:var(--b);color:#fff}
+.slots{display:flex;justify-content:center;flex-wrap:wrap;margin:14px 0;min-height:60px}
+.slot{width:42px;height:56px;border-bottom:4px solid var(--line);font-size:34px;font-weight:800}
+.tiles{display:flex;justify-content:center;flex-wrap:wrap}
+.tile{width:54px;height:58px;border-radius:12px;border:2px solid var(--b);background:var(--card);color:var(--b);font-size:30px;font-weight:800;cursor:pointer}
+.tile:disabled{opacity:.25}
+.msg{min-height:28px;font-weight:700;margin-top:10px;font-size:18px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#stat,.small{color:var(--mut);font-size:14px;text-align:center}
+.plan{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:8px 12px;margin-bottom:10px;font-size:15px}
+.tabs>*,.chips>*{margin:0 6px 8px 0}.row>*{margin:6px}.slots>*{margin:3px}.tiles>*{margin:5px}
+</style></head><body><div id="app">
+<h1>Sound It Out 兩週拼讀練習</h1>
+<div class="chips" id="who"></div>
+<div class="chips" id="days"></div>
+<div class="plan" id="plan"></div>
+<div class="tabs" id="tabs"></div>
+<div class="card" id="main"></div><p id="stat"></p>
+<p class="small">每天約 15–20 分鐘：先練「拼讀說話」，再練「拼字」，有「長短音」就一起做，最後放鬆一下。沒有聲音時請檢查 iPad 靜音鍵。進度存在這台 iPad 的 Safari 裡，請固定用同一個瀏覽器，不要用無痕模式。</p>
+</div>
+<script>
+const P=(s,f)=>s.trim().split("\n").map(l=>{const a=l.split("|");return{t:a[0],zh:a[1]||"",em:a[2]||"",s:a[3]||a[0],f}});
+const f1=P(`dad|爸爸|👨
+mad|生氣|😠
+bat|蝙蝠|🦇
+cat|貓|🐱
+hen|母雞|🐔
+pen|筆|🖊️
+net|網子|🥅
+vet|獸醫|💉
+pig|豬|🐷
+wig|假髮
+sit|坐|💺
+kit|工具組|🧰`,1);
+const f2=P(`hot|熱|🔥
+pot|鍋子|🍲
+box|盒子|📦
+fox|狐狸|🦊
+mug|馬克杯|☕
+bug|小蟲|🐞
+bun|小圓麵包|🍞
+run|跑|🏃`,1);
+const FAM=["ad","at","en","et","ig","it","ot","ox","ug","un"];
+const ie=P(`pin|別針|📌
+win|贏|🏆
+kite|風箏
+pine|松樹|🌲
+wine|葡萄酒
+pet|寵物|🐶
+jet|噴射機|✈️`);
+const ae=P(`cake|蛋糕|🍰
+name|名字|🏷️
+make|做|🔨
+game|遊戲|🎮
+see|看見|👀
+tree|樹|🌳
+bee|蜜蜂|🐝
+green|綠色|💚`);
+const wx=P(`cloudy|多雲的|☁️
+rainy|下雨的|🌧️
+sunny|晴朗的|☀️
+windy|有風的|💨
+cold|冷|🥶
+hot|熱|🔥`);
+const wxs=P(`How’s the weather?|天氣如何？||How's the weather?
+It’s sunny.|晴天|☀️|It's sunny.
+It’s rainy.|雨天|🌧️|It's rainy.
+It’s cold.|很冷|🥶|It's cold.`);
+const n1=P(`one|1
+two|2
+three|3
+four|4
+five|5
+six|6
+seven|7
+eight|8
+nine|9
+ten|10
+eleven|11
+twelve|12
+thirteen|13
+fourteen|14
+fifteen|15
+sixteen|16
+seventeen|17
+eighteen|18
+nineteen|19
+twenty|20`);
+const n2=P(`twenty|20
+thirty|30
+forty|40
+fifty|50
+sixty|60
+seventy|70
+eighty|80
+ninety|90
+one hundred|100`);
+const tm=P(`It’s twelve o’clock.|12:00|🕛|It's twelve o'clock.
+It’s twelve thirty.|12:30|🕧|It's twelve thirty.
+It’s three o’clock.|3:00|🕒|It's three o'clock.
+It’s six thirty.|6:30|🕡|It's six thirty.
+It’s eight o’clock.|8:00|🕗|It's eight o'clock.
+What time is it?|現在幾點？||What time is it?`);
+const SI=[["kit","i",0],["pin","i",0],["win","i",0],["big","i",0],["sit","i",0],["kite","i",1],["pine","i",1],["wine","i",1],["bike","i",1],["five","i",1],["pet","e",0],["jet","e",0],["Ted","e",0],["Pete","e",1],["theme","e",1]];
+const SA=[["cat","a",0],["bat","a",0],["dad","a",0],["cake","a",1],["name","a",1],["make","a",1],["game","a",1]];
+const BL=[
+{n:"短母音字族＋天氣",say:[...f1,...wx,...wxs],spell:[...f1,...wx],sort:[]},
+{n:"字族 o／u＋數字 1–20",say:[...f2,...n1],spell:[...f2,...n1.slice(10)],sort:[]},
+{n:"魔術 e（i／e）＋整十數字",say:[...ie,...n2],spell:[...ie,...n2.slice(0,8)],sort:SI},
+{n:"魔術 e（a）／ee＋時間（a_e、ee 字表為暫定，之後可換成課本的字）",say:[...ae,...tm],spell:[...ae],sort:SA}];
+const fm=(a,f)=>[].concat.apply([],a.map(f));
+const uq=(m)=>{const s=new Set();return fm(BL,b=>b[m]).filter(x=>{const k=x.t||x[0];if(s.has(k))return false;s.add(k);return true})};
+BL.push({n:"總複習：全部混合，第 14 天做小考",say:uq("say"),spell:uq("spell"),sort:uq("sort")});
+const POK="Pikachu Charmander Squirtle Bulbasaur Eevee Snorlax Jigglypuff Psyduck Meowth Mew".split(" ").map(t=>({t,zh:"放鬆時間：先自己念，再聽聽看",em:"⚡",s:t}));
+const $=s=>document.querySelector(s);
+let PF=[],cur="",S={};
+try{PF=JSON.parse(localStorage.getItem("sq3p")||"[]");cur=localStorage.getItem("sq3c")||""}catch(e){}
+if(!PF.length)PF=["哥哥","妹妹"];if(PF.indexOf(cur)<0)cur=PF[0];
+const save=()=>{try{localStorage.setItem("sq3:"+cur,JSON.stringify(S));localStorage.setItem("sq3p",JSON.stringify(PF));localStorage.setItem("sq3c",cur)}catch(e){}};
+const load=()=>{S={};try{S=JSON.parse(localStorage.getItem("sq3:"+cur)||"{}")}catch(e){}};load();
+const esc=t=>t.replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
+function who(n){cur=PF[n];save();load();day=S._day||1;mode="say";head();start()}
+function addWho(){var n=(prompt("新增小朋友的名字")||"").trim().slice(0,8);if(!n||PF.indexOf(n)>=0||PF.length>=6)return;PF.push(n);cur=n;save();load();day=1;mode="say";head();start()}
+const DAY=864e5,GAP=[0,0,1,3,7,14];
+const K=(m,x)=>m+":"+(x.t||x[0]);
+const due=k=>!S[k]||S[k].d<=Date.now();
+function rec(k,ok){const r=S[k]||{b:0,d:0};r.b=ok?Math.min(5,r.b+1):1;r.d=ok?Date.now()+GAP[r.b]*DAY:0;S[k]=r;save()}
+const shuf=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.7;const v=speechSynthesis.getVoices().find(v=>/en[-_]US/.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+let day=S._day||1,mode="say",Q=[],i=0,right=0,heard=false,used=[],L=[];
+const blk=()=>day<=3?0:day<=6?1:day<=9?2:day<=12?3:4;
+function pool(m){if(m==="relax")return POK;const b=blk();let c=BL[b][m]||[];if(b>0&&b<4){const e=fm(BL.slice(0,b),x=>x[m]||[]).filter(x=>due(K(m,x)));c=c.concat(shuf(e).slice(0,4))}return c}
+function head(){$("#who").innerHTML=PF.map((p,n)=>`<button class="chip ${p===cur?"on":""}" style="padding:8px 14px" onclick="who(${n})">${esc(p)}</button>`).join("")+`<button class="chip" style="padding:8px 14px" onclick="addWho()">＋ 新增</button>`;$("#days").innerHTML=Array.from({length:14},(_,n)=>`<button class="chip ${day===n+1?"on":""}" onclick="day=${n+1};S._day=day;save();head();if(!pool(mode).length)mode='say';start()">${n+1}</button>`).join("");
+$("#plan").innerHTML=`<b>第 ${day} 天</b>｜${BL[blk()].n}`;
+const T=[["say","拼讀說話"],["spell","拼字"],["sort","長短音"],["relax","放鬆"]].filter(t=>pool(t[0]).length);
+$("#tabs").innerHTML=T.map(t=>`<button class="tab ${mode===t[0]?"on":""}" onclick="mode='${t[0]}';head();start()">${t[1]}</button>`).join("")}
+function start(){let p=pool(mode);let d=p.filter(x=>due(K(mode,x)));if(d.length<6)d=p;Q=shuf(d).slice(0,10);i=0;right=0;render()}
+function stat(){const p=pool(mode);$("#stat").textContent=mode==="relax"?"":`這個練習已熟練 ${p.filter(x=>(S[K(mode,x)]||{}).b>=3).length} / ${p.length}（連續答對 3 次算熟練，答錯的明天會再出現）`}
+function done(){$("#main").innerHTML=`<div class="hint">🌟</div><h2>這一輪完成了！</h2><p>${mode==="relax"?"":`答對 ${right} / ${Q.length}`}</p><div class="row"><button class="btn big go" onclick="start()">再練一輪</button></div>`;stat()}
+function next(){i++;render()}
+function render(){heard=false;stat();if(i>=Q.length)return done();({say:rSay,spell:rSpell,sort:rSort,relax:rSay})[mode]()}
+function rSay(){const x=Q[i];let w=x.t,h=`<span class="rm">${w}</span>`;
+if(x.f){const r=FAM.find(f=>w.endsWith(f));h=`<span class="on1">${w.slice(0,-r.length)}</span><span class="rm">${r}</span>`}
+const fs=w.length>10?30:w.length>7?48:72;
+$("#main").innerHTML=`<div class="small">${i+1} / ${Q.length}　先自己念念看，再按喇叭確認</div><p class="hint">${x.em}</p><div class="word" style="font-size:${fs}px">${h}</div><div class="zh">${x.zh}</div><div class="row"><button class="btn big snd" onclick="hear()">🔊 聽聽看</button></div><div class="row" id="ans"></div>`}
+function hear(){say(Q[i].s);if(!heard){heard=true;$("#ans").innerHTML=mode==="relax"?`<button class="btn big go" onclick="next()">下一個</button>`:`<button class="btn big go" onclick="rec(K(mode,Q[i]),1);right++;next()">我念對了 ✓</button><button class="btn big no" onclick="rec(K(mode,Q[i]),0);next()">再練 ✗</button>`}}
+function rSpell(){const x=Q[i],w=x.t;used=[];const ex=shuf("abcdefghilmnoprstuwy".split("")).slice(0,2);
+L=shuf([...w.replace(/ /g,"").split(""),...ex]);
+$("#main").innerHTML=`<div class="small">${i+1} / ${Q.length}</div><p class="hint">${x.em}</p><div class="zh">${x.zh}</div><div class="row"><button class="btn big snd" onclick="say(Q[i].s)">🔊 聽發音</button></div><div class="slots" id="sl"></div><div class="tiles" id="ti"></div><div class="row"><button class="btn" onclick="used.pop();draw()">⌫ 倒退</button></div><div class="msg" id="msg"></div>`;draw()}
+function draw(){const w=Q[i].t.replace(/ /g,"");$("#sl").innerHTML=w.split("").map((_,n)=>`<div class="slot">${used[n]!==undefined?L[used[n]]:""}</div>`).join("");
+$("#ti").innerHTML=L.map((c,n)=>`<button class="tile" ${used.includes(n)?"disabled":""} onclick="pick(${n})">${c}</button>`).join("")}
+function pick(n){const x=Q[i],w=x.t.replace(/ /g,"");if(used.length>=w.length)return;used.push(n);draw();if(used.length===w.length){const ok=used.map(k=>L[k]).join("")===w;rec(K("spell",x),ok);if(ok)right++;
+$("#msg").innerHTML=ok?`<span class="ok">答對了！${x.t} ⭐</span>`:`<span class="bad">差一點，正確是 ${x.t}</span>`;if(!ok)$("#sl").classList.add("shake");say(x.s);
+$("#ti").innerHTML=`<button class="btn big go" onclick="next()">下一個</button>`}}
+function rSort(){const [w,v]=Q[i];
+$("#main").innerHTML=`<div class="small">${i+1} / ${Q.length}　先念念看，再判斷 ${v} 是短音還是長音</div><div class="word">${w}</div><div class="row"><button class="btn big snd" onclick="say('${w}')">🔊 聽聽看</button></div><div class="row"><button class="btn big" onclick="ans(0)">短音 ${v}</button><button class="btn big" onclick="ans(1)">長音（念字母名）</button></div><div class="msg" id="msg"></div>`}
+function ans(g){const [w,v,l]=Q[i],ok=g===l;rec(K("sort",Q[i]),ok);if(ok)right++;say(w);
+const rule=l?`${w} 結尾有「魔術 e」，所以 ${v} 念長音。`:`${w} 的 ${v} 後面沒有魔術 e，所以 ${v} 念短音。`;
+$("#msg").innerHTML=`<span class="${ok?"ok":"bad"}">${ok?"答對了！":"再想想！"}</span><br>${rule}`;
+$("#main").insertAdjacentHTML("beforeend",`<div class="row"><button class="btn big go" onclick="next()">下一個</button></div>`)}
+head();start();
+</script></body></html>
